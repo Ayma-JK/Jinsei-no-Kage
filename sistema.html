@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema - Cyberpunk RPG</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .system-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+            z-index: -1;
+            display: none;
+        }
+
+        .system-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .system-description {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            margin-bottom: 20px;
+        }
+
+        .system-description p, .system-description li {
+            color: #e0e0e0;
+            text-shadow: 0 0 5px rgba(0, 255, 255, 0.7);
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+
+        h2 {
+            color: #00ffff;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+            font-family: 'Orbitron', sans-serif;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .glitch-header {
+            position: relative;
+            animation: glitch 2s infinite;
+        }
+
+        /* ... (include the glitch effect styles from corporacoes.html) ... */
+
+        .attribute-vigor { color: #00ff00; } /* Green */
+        .attribute-agilidade { color: #ff0000; } /* Red */
+        .attribute-conhecimento { color: #0000ff; } /* Blue */
+        .attribute-influencia { color: #ffff00; } /* Yellow */
+        .attribute-inteligencia { color: #ff00ff; } /* Magenta */
+        .attribute-poder { color: #00ffff; } /* Cyan */
+    </style>
+</head>
+<body>
+    <div class="cyberpunk-overlay"></div>
+    <div class="system-background">
+        <video autoplay loop muted>
+            <source src="path/to/system-background-video.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <header>
+        <h1 class="glitch" data-text="Sistema">Sistema</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="neon-button">Voltar</a></li>
+                <li><a href="#fundamentos" class="neon-button system-link" data-section="fundamentos">Fundamentos do Sistema</a></li>
+                <li><a href="#mecanica-atributos-pericias" class="neon-button system-link" data-section="mecanica-atributos-pericias">Mecânica de Atributos e Perícias</a></li>
+                <li><a href="#atributos-pericias-detalhados" class="neon-button system-link" data-section="atributos-pericias-detalhados">Atributos e Perícias Detalhados</a></li>
+                <!-- Add more navigation items for other sections when they are created -->
+            </ul>
+        </nav>
+    </header>
+
+    <main id="system-content">
+        <section id="fundamentos" class="system-section">
+            <h2 class="glitch-header" data-text="Fundamentos do Sistema">Fundamentos do Sistema</h2>
+            <div class="system-description visor-effect">
+                <p>Descubra os princípios básicos que regem nosso sistema de RPG:</p>
+                <ul>
+                    <li>
+                        <strong>Perícias e Pontos</strong><br>
+                        Cada ponto em uma perícia específica confere ao personagem uma chance de 10% de sucesso em ações relacionadas a essa perícia. Por exemplo, 3 pontos em uma perícia dão 30% de chance de sucesso.
+                    </li>
+                    <li>
+                        <strong>Rolagem de Dados</strong><br>
+                        As ações são resolvidas por meio de uma rolagem de 1d100, ou seja, um dado que gera um número aleatório entre 1 e 100. O resultado deve ser igual ou inferior ao valor de sucesso da perícia do personagem.
+                    </li>
+                    <li>
+                        <strong>Testes de Perícia</strong><br>
+                        Para realizar um teste, o jogador rola 1d100. O resultado deve ser igual ou inferior ao valor de sucesso determinado pela perícia do personagem multiplicada por 10. Por exemplo, com 3 pontos em uma perícia, é necessário obter 30 ou menos no dado para ter sucesso.
+                    </li>
+                    <li>
+                        <strong>Confrontos entre Personagens</strong><br>
+                        Em confrontos diretos, ambos os personagens rolam 1d100. Se ambos falharem, não há alteração. Se um acertar e o outro errar, o que acertou vence. Se um personagem tem vantagem de 2 ou mais pontos de perícia, ele ganha automaticamente.
+                    </li>
+                    <li>
+                        <strong>Testes contra Dificuldades Fixas</strong><br>
+                        O mestre pode definir uma dificuldade em pontos de perícia para tarefas específicas. Se o personagem tiver pontos iguais ou superiores à dificuldade, ele supera o desafio automaticamente. Caso contrário, é necessário um teste de perícia.
+                    </li>
+                    <li>
+                        <strong>Estrutura Completa do Sistema de Turnos</strong><br>
+                        Cada personagem, durante seu turno, pode realizar:
+                        <ul>
+                            <li>Ação Padrão: Para atividades importantes como conjurar feitiços ou usar habilidades especiais.</li>
+                            <li>Reação: Para se esquivar, contra-atacar ou ajudar um aliado.</li>
+                            <li>Ação de Movimento: Para se deslocar pelo campo de batalha.</li>
+                        </ul>
+                        Um personagem pode optar por guardar sua Ação Padrão para o próximo turno, mas pode perdê-la se for atacado ou reagir.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="mecanica-atributos-pericias" class="system-section" style="display: none;">
+            <h2 class="glitch-header" data-text="Mecânica de Atributos e Perícias">Mecânica de Atributos e Perícias</h2>
+            <div class="system-description visor-effect">
+                <p>Entenda como funcionam os atributos e perícias no nosso sistema:</p>
+                <ul>
+                    <li>
+                        <strong>Pontos Iniciais</strong><br>
+                        No nível 0, cada personagem começa com 3 pontos de atributo para distribuir entre Vigor, Agilidade, Percepção, Influência, Inteligência e Poder/Habilidade.
+                    </li>
+                    <li>
+                        <strong>Distribuição de Perícias</strong><br>
+                        Para cada ponto investido em um atributo, o personagem recebe 3 pontos de perícia para distribuir entre as perícias relacionadas àquele atributo.
+                    </li>
+                    <li>
+                        <strong>Progressão de Nível</strong><br>
+                        A cada novo nível, o personagem ganha 2 pontos de atributo adicionais para distribuir, o que também resulta em mais pontos de perícia.
+                    </li>
+                    <li>
+                        <strong>Limite de Atributos por Nível</strong><br>
+                        O máximo de pontos em qualquer atributo é limitado pelo nível do personagem mais três. Por exemplo, no nível 1, o máximo em qualquer atributo é 4 pontos.
+                    </li>
+                    <li>
+                        <strong>Exemplo Prático de Criação de Personagem</strong><br>
+                        Um mago no nível 1 poderia distribuir seus 3 pontos iniciais em Inteligência (2 pontos) e Poder/Habilidade (1 ponto), ganhando 6 pontos de perícia para Inteligência e 3 para Poder/Habilidade. Ao atingir o nível 2, ele ganha mais 2 pontos de atributo e 6 pontos de perícia correspondentes.
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="atributos-pericias-detalhados" class="system-section" style="display: none;">
+            <h2 class="glitch-header" data-text="Atributos e Perícias Detalhados">Atributos e Perícias Detalhados</h2>
+            <div class="system-description visor-effect">
+                <p>Explore cada atributo e suas perícias associadas:</p>
+
+                <h3 class="attribute-vigor">Vigor</h3>
+                <p>Representa a força física e resistência do personagem.</p>
+                <ul>
+                    <li>Resiliência: Resistência a condições extremas e efeitos negativos.</li>
+                    <li>Energia: Capacidade de sustentar esforços físicos prolongados.</li>
+                    <li>Recuperação: Velocidade de cura física e mental.</li>
+                    <li>Força de Vontade: Resistência a controle mental ou influência psíquica.</li>
+                    <li>Atletismo: Habilidade em atividades físicas como correr, saltar e escalar.</li>
+                    <li>Sobrevivência: Capacidade de persistir em ambientes hostis.</li>
+                    <li>Vigor Mágico: Resistência e manipulação de energias mágicas.</li>
+                    <li>Endurance: Tolerância a dor e fadiga durante combates ou desafios.</li>
+                    <li>Regeneração: Habilidade especial de curar ferimentos rapidamente.</li>
+                    <li>Imunidade: Resistência natural ou adquirida contra venenos e doenças.</li>
+                </ul>
+
+                <h3 class="attribute-agilidade">Agilidade</h3>
+                <p>Reflete a destreza, velocidade e coordenação do personagem.</p>
+                <ul>
+                    <li>Esquiva: Habilidade de evitar ataques físicos e mágicos.</li>
+                    <li>Rapidez: Capacidade de executar múltiplas ações em pouco tempo.</li>
+                    <li>Acrobacia: Proficiência em manobras, saltos e movimentos ágeis.</li>
+                    <li>Furtividade: Habilidade de mover-se sem ser detectado.</li>
+                    <li>Prestidigitação: Destreza manual para mágicas, truques ou roubo.</li>
+                    <li>Tiro Preciso: Perícia em acertar alvos com armas de longo alcance.</li>
+                    <li>Condução: Habilidade em pilotar ou dirigir veículos em situações adversas.</li>
+                    <li>Combate Desarmado: Proficiência em lutas usando apenas o corpo.</li>
+                    <li>Artes Marciais: Técnicas especializadas de combate corpo a corpo.</li>
+                    <li>Arremesso: Precisão ao lançar objetos ou armas como facas.</li>
+                </ul>
+
+                <h3 class="attribute-conhecimento">Conhecimento</h3>
+                <p>Indica a capacidade de observação e intuição do personagem.</p>
+                <ul>
+                    <li>Investigação: Capacidade de encontrar e analisar pistas.</li>
+                    <li>Empatia: Entendimento das emoções e intenções dos outros.</li>
+                    <li>Intuição: Sentir perigos iminentes ou a verdade em declarações.</li>
+                    <li>Percepção Ambiental: Detectar alterações ou perigos no ambiente.</li>
+                    <li>Rastreamento: Seguir trilhas ou sinais deixados por outros.</li>
+                    <li>Vigilância: Manter-se alerta a ameaças potenciais em longos períodos.</li>
+                    <li>Perícia Tecnológica: Habilidade com dispositivos e sistemas tecnológicos.</li>
+                    <li>Criptografia: Capacidade de decifrar códigos e linguagens secretas.</li>
+                    <li>Astronomia: Conhecimento e interpretação de fenômenos celestes.</li>
+                    <li>Balística: Entendimento das dinâmicas de projéteis e armas de fogo.</li>
+                </ul>
+
+                <h3 class="attribute-influencia">Influência</h3>
+                <p>Representa o carisma e a capacidade de interação social do personagem.</p>
+                <ul>
+                    <li>Persuasão: Convencer outros a adotar suas ideias ou ações.</li>
+                    <li>Comando: Liderar grupos efetivamente em situações variadas.</li>
+                    <li>Intimidação: Usar a ameaça para coagir ou controlar outros.</li>
+                    <li>Diplomacia: Resolver conflitos e negociar acordos pacíficos.</li>
+                    <li>Atuação: Expressar emoções e desempenhar papéis convincentemente.</li>
+                    <li>Enganação: Mentir ou disfarçar intenções habilmente.</li>
+                    <li>Carisma: Atrair e manter a atenção e admiração dos outros.</li>
+                    <li>Sedução: Atrair e influenciar outros através do charme e atração.</li>
+                    <li>Manipulação: Habilidade em causar caos ou influenciar situações sutilmente.</li>
+                    <li>Negociação: Habilidade em realizar trocas vantajosas.</li>
+                </ul>
+
+                <h3 class="attribute-inteligencia">Inteligência</h3>
+                <p>Mede a capacidade mental, raciocínio e aplicação de conhecimentos do personagem.</p>
+                <ul>
+                    <li>Lógica: Habilidade em resolver problemas complexos e puzzles.</li>
+                    <li>Conhecimento Acadêmico: Domínio de campos específicos do saber.</li>
+                    <li>Linguística: Capacidade de aprender e utilizar várias línguas com fluência.</li>
+                    <li>Estratégia: Habilidade em planejar ações e manobras em situações complexas.</li>
+                    <li>Medicina: Conhecimento e prática em curar doenças e tratar ferimentos.</li>
+                    <li>Hacking: Aptidão para manipular sistemas digitais e eletrônicos.</li>
+                    <li>Alquimia: Habilidade em criar poções, venenos e explosivos.</li>
+                    <li>Engenharia: Competência em projetar, construir e reparar máquinas e estruturas.</li>
+                    <li>Magia Teórica: Conhecimento profundo das leis mágicas e sua aplicação prática.</li>
+                </ul>
+
+                <h3 class="attribute-poder">Poder/Habilidade (Afinidades)</h3>
+                <p>Concentra-se em afinidades que melhoram e refinam o uso dos poderes especiais dos personagens.</p>
+                <ul>
+                    <li>Controle: Aumenta a distância e o dano de conjurações ou habilidades.</li>
+                    <li>Amplificação: Aumenta o efeito ou dano de habilidades, com custo adicional.</li>
+                    <li>Mana: Aumenta a reserva de energia mágica ou mutante.</li>
+                    <li>Precisão: Melhora a precisão na direção de poderes.</li>
+                    <li>Resistência Mágica/Tecnológica: Aumenta a resistência a poderes similares.</li>
+                    <li>Adaptação: Permite modificar poderes para diferentes situações.</li>
+                    <li>Sintonia: Aumenta a afinidade com um tipo específico de elemento ou energia.</li>
+                    <li>Conjuração Rápida: Reduz o tempo de preparação de poderes ou magias.</li>
+                    <li>Dualidade: Permite usar dois poderes simultaneamente ou combinar efeitos.</li>
+                    <li>Restauração: Melhora a recarga ou restauração de energia gasta em poderes.</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Cyberpunk RPG</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const systemLinks = document.querySelectorAll('.system-link');
+            const systemSections = document.querySelectorAll('.system-section');
+
+            function hideAllSections() {
+                systemSections.forEach(section => {
+                    section.style.display = 'none';
+                });
+            }
+
+            function showSection(sectionId) {
+                hideAllSections();
+                const sectionToShow = document.getElementById(sectionId);
+                if (sectionToShow) {
+                    sectionToShow.style.display = 'block';
+                }
+            }
+
+            systemLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('data-section');
+                    showSection(sectionId);
+                });
+            });
+
+            // Show the first section by default
+            if (systemSections.length > 0) {
+                systemSections[0].style.display = 'block';
+            }
+        });
+
+        // ... (keep the existing JavaScript functions for character sheet calculations)
+    </script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: transparent;
+    color: #ff0000;
+    font-family: 'Orbitron', sans-serif;
+    overflow: hidden;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+h1, .btn-neon, #music-player button, #now-playing {
+    color: #000;
+    text-shadow: 
+        -1px -1px 0 #ff0000,
+        1px -1px 0 #ff0000,
+        -1px 1px 0 #ff0000,
+        1px 1px 0 #ff0000,
+        0 0 5px #ff0000,
+        0 0 10px #ff0000;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+h1 {
+    text-align: center;
+    font-size: 4em;
+    margin-bottom: 50px;
+    color: #000; /* Cor preta para o texto principal */
+}
+
+/* Efeito Glitch */
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff0000; /* Vermelho */
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 #ff0000, 2px 2px #ff0000; /* Vermelho */
+    animation: glitch-anim 2.5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+    0% {
+        clip: rect(5px, 9999px, 75px, 0);
+    }
+    25% {
+        clip: rect(65px, 9999px, 91px, 0);
+    }
+    50% {
+        clip: rect(15px, 9999px, 100px, 0);
+    }
+    75% {
+        clip: rect(45px, 9999px, 70px, 0);
+    }
+    100% {
+        clip: rect(92px, 9999px, 36px, 0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    0% {
+        clip: rect(65px, 9999px, 99px, 0);
+    }
+    25% {
+        clip: rect(25px, 9999px, 39px, 0);
+    }
+    50% {
+        clip: rect(85px, 9999px, 70px, 0);
+    }
+    75% {
+        clip: rect(15px, 9999px, 95px, 0);
+    }
+    100% {
+        clip: rect(45px, 9999px, 22px, 0);
+    }
+}
+
+@keyframes glow {
+    from {
+        text-shadow: 
+            -1px -1px 0 #ff0000,
+            1px -1px 0 #ff0000,
+            -1px 1px 0 #ff0000,
+            1px 1px 0 #ff0000,
+            0 0 5px #ff0000,
+            0 0 10px #ff0000;
+    }
+    to {
+        text-shadow: 
+            -1px -1px 0 #ff0000,
+            1px -1px 0 #ff0000,
+            -1px 1px 0 #ff0000,
+            1px 1px 0 #ff0000,
+            0 0 10px #ff0000,
+            0 0 20px #ff0000,
+            0 0 30px #ff0000;
+    }
+}
+
+#background-video {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -1;
+    transform: translateX(-50%) translateY(-50%) scale(0.4); /* Ajuste o scale conforme necessário */
+    object-fit: cover;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-around;
+    list-style-type: none;
+    padding: 0;
+}
+
+.btn-neon {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    color: #ff0000;
+    text-decoration: none;
+    font-size: 1.2em;
+    overflow: hidden;
+    transition: all 0.3s;
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 0, 0, 0.3);
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    clip-path: polygon(92% 0, 100% 25%, 100% 100%, 8% 100%, 0% 75%, 0 0);
+}
+
+.btn-neon::before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    background: rgba(255, 0, 0, 0.1);
+    z-index: -1;
+    filter: blur(1px);
+    animation: subtleBorderGlow 4s ease-in-out infinite;
+}
+
+@keyframes subtleBorderGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.7; }
+}
+
+.btn-neon:hover {
+    background: rgba(128, 0, 0, 0.7);
+    color: #fff;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    text-shadow: none;
+}
+
+#music-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
+    border: 1px solid #ff0000;
+}
+
+#music-player button {
+    background: transparent;
+    border: 1px solid #ff0000;
+    padding: 5px 10px;
+    margin: 0 5px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    transition: all 0.3s;
+}
+
+#music-player button:hover {
+    background: rgba(255, 0, 0, 0.1);
+    box-shadow: 0 0 10px #ff0000;
+}
+
+#now-playing {
+    margin-top: 10px;
+    font-size: 0.8em;
+}
+
+#volume-control {
+    -webkit-appearance: none;
+    width: 100px;
+    height: 4px;
+    background: #300;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+    margin: 10px 0;
+}
+
+#volume-control:hover {
+    opacity: 1;
+}
+
+#volume-control::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: #ff0000;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 3px #ff0000, 0 0 6px #ff0000, 0 0 9px #ff0000;
+    transition: all 0.3s ease;
+}
+
+#volume-control::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    background: #ff0000;
+    cursor: pointer;
+    border-radius: 50%;
+    box-shadow: 0 0 3px #ff0000, 0 0 6px #ff0000, 0 0 9px #ff0000;
+    transition: all 0.3s ease;
+}
+
+#volume-control::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000;
+}
+
+#volume-control::-moz-range-thumb:hover {
+    box-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000;
+}
+
+#volume-control::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: linear-gradient(to right, #ff0000 var(--volume), #300 var(--volume));
+    border-radius: 2px;
+}
+
+#volume-control::-moz-range-track {
+    width: 100%;
+    height: 4px;
+    cursor: pointer;
+    background: #300;
+    border-radius: 2px;
+}
+
+#volume-control::-moz-range-progress {
+    background-color: #ff0000;
+    height: 4px;
+    border-radius: 2px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+    background-color: #000;
+    color: #00ffff;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.character-sheet {
+    padding: 20px;
+    margin-bottom: 20px;
+    overflow-y: auto;
+    max-height: none;
+}
+
+.content-wrapper {
+    padding-bottom: 50px; /* Ajuste conforme necessário */
+}

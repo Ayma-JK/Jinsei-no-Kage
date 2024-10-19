@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ficha de Personagem - Sistema JK</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0a0a1a;
+            color: #00ffff;
+            font-family: 'Orbitron', sans-serif;
+        }
+        .character-sheet {
+            background-color: rgba(10, 10, 26, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #00ffff;
+            box-shadow: 0 0 10px #00ffff;
+            margin-bottom: 20px;
+        }
+        .attribute { color: #00ffff; }
+        input, textarea, select {
+            background-color: rgba(10, 10, 26, 0.5);
+            color: #e0e0e0;
+            border: 1px solid #00ffff;
+            padding: 5px;
+            margin: 2px 0;
+            font-family: 'Courier New', monospace;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #00ffff;
+            padding: 5px;
+            text-align: left;
+        }
+        h1, h2, h3 {
+            color: #00ffff;
+            text-shadow: 0 0 5px #00ffff;
+        }
+        .glitch-header {
+            position: relative;
+            animation: glitch 2s infinite;
+        }
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 #00ffff, -0.05em -0.025em 0 #ff00de; }
+            14% { text-shadow: 0.05em 0 0 #00ffff, -0.05em -0.025em 0 #ff00de; }
+            15% { text-shadow: -0.05em -0.025em 0 #00ffff, 0.025em 0.025em 0 #ff00de; }
+            49% { text-shadow: -0.05em -0.025em 0 #00ffff, 0.025em 0.025em 0 #ff00de; }
+            50% { text-shadow: 0.025em 0.05em 0 #00ffff, 0.05em 0 0 #ff00de; }
+            99% { text-shadow: 0.025em 0.05em 0 #00ffff, 0.05em 0 0 #ff00de; }
+            100% { text-shadow: -0.025em 0 0 #00ffff, -0.025em -0.025em 0 #ff00de; }
+        }
+        .neon-button {
+            background-color: transparent;
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            transition-duration: 0.4s;
+            cursor: pointer;
+            box-shadow: 0 0 10px #00ffff;
+        }
+        .neon-button:hover {
+            background-color: #00ffff;
+            color: #0a0a1a;
+        }
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .tab:hover, .tab.active {
+            background-color: #00ffff;
+            color: #0a0a1a;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="character-sheet">
+        <h1 class="glitch-header" data-text="Ficha de Personagem - Sistema JK">Ficha de Personagem - Sistema JK</h1>
+
+        <div class="tabs">
+            <div class="tab active" onclick="openTab(event, 'info')">Informações</div>
+            <div class="tab" onclick="openTab(event, 'attributes')">Atributos</div>
+            <div class="tab" onclick="openTab(event, 'skills')">Perícias</div>
+            <div class="tab" onclick="openTab(event, 'status')">Status</div>
+            <div class="tab" onclick="openTab(event, 'equipment')">Equipamento</div>
+            <div class="tab" onclick="openTab(event, 'notes')">Notas</div>
+        </div>
+
+        <div id="info" class="tab-content active">
+            <h2>Informações Básicas</h2>
+            <p>Nome do Personagem: <input type="text" id="characterName"></p>
+            <p>Jogador: <input type="text" id="playerName"></p>
+            <p>Raça: <input type="text" id="race"></p>
+            <p>Caminho: <input type="text" id="path"></p>
+            <p>Nível: <input type="number" id="level" min="1" value="1"></p>
+            <p>Experiência: <input type="number" id="xp" min="0" value="0"> / <span id="xpToNextLevel">100</span></p>
+        </div>
+
+        <div id="attributes" class="tab-content">
+            <h2>Atributos</h2>
+            <table>
+                <tr>
+                    <th>Atributo</th>
+                    <th>Pontos</th>
+                    <th>Perícia</th>
+                </tr>
+                <tr>
+                    <td class="attribute">Vigor</td>
+                    <td><input type="number" id="vigor" min="0" value="0" class="attribute-input"></td>
+                    <td><span id="vigorSkillPoints">0</span></td>
+                </tr>
+                <tr>
+                    <td class="attribute">Agilidade</td>
+                    <td><input type="number" id="agility" min="0" value="0" class="attribute-input"></td>
+                    <td><span id="agilitySkillPoints">0</span></td>
+                </tr>
+                <tr>
+                    <td class="attribute">Inteligência</td>
+                    <td><input type="number" id="intelligence" min="0" value="0" class="attribute-input"></td>
+                    <td><span id="intelligenceSkillPoints">0</span></td>
+                </tr>
+                <tr>
+                    <td class="attribute">Influência</td>
+                    <td><input type="number" id="influence" min="0" value="0" class="attribute-input"></td>
+                    <td><span id="influenceSkillPoints">0</span></td>
+                </tr>
+                <tr>
+                    <td class="attribute">Conhecimento</td>
+                    <td><input type="number" id="knowledge" min="0" value="0" class="attribute-input"></td>
+                    <td><span id="knowledgeSkillPoints">0</span></td>
+                </tr>
+                <tr>
+                    <td class="attribute">Poder/Habilidade</td>
+                    <td><input type="number" id="power" min="0" value="0" class="attribute-input"></td>
+                    <td><span id="powerSkillPoints">0</span></td>
+                </tr>
+            </table>
+            <p>Total de Pontos de Atributo: <span id="totalAttributePoints">0</span> / <span id="maxAttributePoints">3</span></p>
+        </div>
+
+        <div id="skills" class="tab-content">
+            <h2>Perícias</h2>
+            <h3 class="attribute">Vigor</h3>
+            <table>
+                <tr>
+                    <td>Resiliência</td>
+                    <td><input type="number" id="resilience" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+                <tr>
+                    <td>Energia</td>
+                    <td><input type="number" id="energy" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+                <tr>
+                    <td>Recuperação</td>
+                    <td><input type="number" id="recovery" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+                <tr>
+                    <td>Força de Vontade</td>
+                    <td><input type="number" id="willpower" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+                <tr>
+                    <td>Atletismo</td>
+                    <td><input type="number" id="athletics" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+                <tr>
+                    <td>Sobrevivência</td>
+                    <td><input type="number" id="survival" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+                <tr>
+                    <td>Vigor Mágico</td>
+                    <td><input type="number" id="magicalVigor" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+                <tr>
+                    <td>Endurance</td>
+                    <td><input type="number" id="endurance" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+                <tr>
+                    <td>Regeneração</td>
+                    <td><input type="number" id="regeneration" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+                <tr>
+                    <td>Imunidade</td>
+                    <td><input type="number" id="immunity" min="0" value="0" class="skill-input" data-attribute="vigor"></td>
+                </tr>
+            </table>
+
+            <h3 class="attribute">Agilidade</h3>
+            <table>
+                <tr>
+                    <td>Esquiva</td>
+                    <td><input type="number" id="evasion" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+                <tr>
+                    <td>Rapidez</td>
+                    <td><input type="number" id="speed" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+                <tr>
+                    <td>Acrobacia</td>
+                    <td><input type="number" id="acrobatics" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+                <tr>
+                    <td>Furtividade</td>
+                    <td><input type="number" id="stealth" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+                <tr>
+                    <td>Prestidigitação</td>
+                    <td><input type="number" id="prestidigitation" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+                <tr>
+                    <td>Tiro Preciso</td>
+                    <td><input type="number" id="preciseShot" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+                <tr>
+                    <td>Condução</td>
+                    <td><input type="number" id="driving" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+                <tr>
+                    <td>Combate Desarmado</td>
+                    <td><input type="number" id="unarmedCombat" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+                <tr>
+                    <td>Artes Marciais</td>
+                    <td><input type="number" id="martialArts" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+                <tr>
+                    <td>Arremesso</td>
+                    <td><input type="number" id="throwing" min="0" value="0" class="skill-input" data-attribute="agility"></td>
+                </tr>
+            </table>
+
+            <h3 class="attribute">Inteligência</h3>
+            <table>
+                <tr>
+                    <td>Investigação</td>
+                    <td><input type="number" id="investigation" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+                <tr>
+                    <td>Empatia</td>
+                    <td><input type="number" id="empathy" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+                <tr>
+                    <td>Intuição</td>
+                    <td><input type="number" id="intuition" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+                <tr>
+                    <td>Percepção Ambiental</td>
+                    <td><input type="number" id="environmentalPerception" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+                <tr>
+                    <td>Rastreamento</td>
+                    <td><input type="number" id="tracking" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+                <tr>
+                    <td>Vigilância</td>
+                    <td><input type="number" id="vigilance" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+                <tr>
+                    <td>Perícia Tecnológica</td>
+                    <td><input type="number" id="technologicalSkill" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+                <tr>
+                    <td>Criptografia</td>
+                    <td><input type="number" id="cryptography" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+                <tr>
+                    <td>Astronomia</td>
+                    <td><input type="number" id="astronomy" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+                <tr>
+                    <td>Balística</td>
+                    <td><input type="number" id="ballistics" min="0" value="0" class="skill-input" data-attribute="intelligence"></td>
+                </tr>
+            </table>
+
+            <h3 class="attribute">Influência</h3>
+            <table>
+                <tr>
+                    <td>Persuasão</td>
+                    <td><input type="number" id="persuasion" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+                <tr>
+                    <td>Comando</td>
+                    <td><input type="number" id="command" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+                <tr>
+                    <td>Intimidação</td>
+                    <td><input type="number" id="intimidation" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+                <tr>
+                    <td>Diplomacia</td>
+                    <td><input type="number" id="diplomacy" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+                <tr>
+                    <td>Atuação</td>
+                    <td><input type="number" id="acting" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+                <tr>
+                    <td>Enganação</td>
+                    <td><input type="number" id="deception" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+                <tr>
+                    <td>Carisma</td>
+                    <td><input type="number" id="charisma" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+                <tr>
+                    <td>Sedução</td>
+                    <td><input type="number" id="seduction" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+                <tr>
+                    <td>Manipulação</td>
+                    <td><input type="number" id="manipulation" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+                <tr>
+                    <td>Negociação</td>
+                    <td><input type="number" id="negotiation" min="0" value="0" class="skill-input" data-attribute="influence"></td>
+                </tr>
+            </table>
+
+            <h3 class="attribute">Conhecimento</h3>
+            <table>
+                <tr>
+                    <td>Lógica</td>
+                    <td><input type="number" id="logic" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+                <tr>
+                    <td>Conhecimento Acadêmico</td>
+                    <td><input type="number" id="academicKnowledge" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+                <tr>
+                    <td>Linguística</td>
+                    <td><input type="number" id="linguistics" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+                <tr>
+                    <td>Estratégia</td>
+                    <td><input type="number" id="strategy" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+                <tr>
+                    <td>Medicina</td>
+                    <td><input type="number" id="medicine" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+                <tr>
+                    <td>Hacking</td>
+                    <td><input type="number" id="hacking" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+                <tr>
+                    <td>Alquimia</td>
+                    <td><input type="number" id="alchemy" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+                <tr>
+                    <td>Criptografia Avançada</td>
+                    <td><input type="number" id="advancedCryptography" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+                <tr>
+                    <td>Engenharia</td>
+                    <td><input type="number" id="engineering" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+                <tr>
+                    <td>Magia Teórica</td>
+                    <td><input type="number" id="theoreticalMagic" min="0" value="0" class="skill-input" data-attribute="knowledge"></td>
+                </tr>
+            </table>
+
+            <h3 class="attribute">Poder/Habilidade</h3>
+            <table>
+                <tr>
+                    <td>Controle</td>
+                    <td><input type="number" id="control" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+                <tr>
+                    <td>Amplificação</td>
+                    <td><input type="number" id="amplification" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+                <tr>
+                    <td>Mana</td>
+                    <td><input type="number" id="mana" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+                <tr>
+                    <td>Precisão</td>
+                    <td><input type="number" id="precision" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+                <tr>
+                    <td>Resistência Mágica/Tecnológica</td>
+                    <td><input type="number" id="magicTechResistance" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+                <tr>
+                    <td>Adaptação</td>
+                    <td><input type="number" id="adaptation" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+                <tr>
+                    <td>Sintonia</td>
+                    <td><input type="number" id="synergy" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+                <tr>
+                    <td>Conjuração Rápida</td>
+                    <td><input type="number" id="fastCasting" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+                <tr>
+                    <td>Dualidade</td>
+                    <td><input type="number" id="duality" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+                <tr>
+                    <td>Restauração</td>
+                    <td><input type="number" id="restoration" min="0" value="0" class="skill-input" data-attribute="power"></td>
+                </tr>
+            </table>
+
+            <p>Total de Pontos de Perícia: <span id="totalSkillPoints">0</span> / <span id="maxSkillPoints">9</span></p>
+        </div>
+
+        <div id="status" class="tab-content">
+            <h2>Status</h2>
+            <p>Pontos de Vida: <input type="number" id="currentHP" min="0" value="0"> / <span id="maxHP">0</span></p>
+            <p>Pontos de Mana: <input type="number" id="currentMana" min="0" value="0"> / <span id="maxMana">0</span></p>
+            <p>Pontos de Energia: <input type="number" id="currentEnergy" min="0" value="0"> / <span id="maxEnergy">0</span></p>
+            <p>Defesa: <span id="defense">10</span> (10 + Valor da Armadura + Proteções Extras)</p>
+            <p>Defesa Mágica: <span id="magicDefense">0</span></p>
+            <p>Iniciativa: <span id="initiative">10</span> (10 + Bônus de Agilidade)</p>
+
+            <h2>Habilidades e Poderes</h2>
+            <textarea id="powersAndAbilities" rows="10" cols="50"></textarea>
+            <button class="neon-button" onclick="increaseTextareaSize('powersAndAbilities')">Aumentar Espaço</button>
+
+            <h2>Inventário</h2>
+            <textarea id="inventory" rows="10" cols="50"></textarea>
+            <button class="neon-button" onclick="increaseTextareaSize('inventory')">Aumentar Espaço</button>
+            <p>Peso Total: <span id="totalWeight">0</span> / Capacidade de Carga: <span id="carryCapacity">0</span></p>
+        </div>
+
+        <div id="equipment" class="tab-content">
+            <h2>Equipamento</h2>
+            <p>Arma Principal: 
+                <input type="text" id="mainWeapon">
+                Dano Físico: <input type="number" id="physicalDamage" min="0" value="0">
+                Dano Mágico: <input type="number" id="magicDamage" min="0" value="0">
+            </p>
+            <p>Armadura Física: Valor <input type="number" id="armorValue" min="0" value="0"> Nome <input type="text" id="armorName"> Extra <input type="number" id="armorExtra" min="0" value="0"></p>
+            <p>Armadura Mágica: Valor <input type="number" id="magicArmorValue" min="0" value="0"> Nome <input type="text" id="magicArmorName"> Extra <input type="number" id="magicArmorExtra" min="0" value="0"></p>
+            <p>Acessório 1: <input type="text" id="accessory1">
+                Def. Física: <input type="number" id="accessory1PhysDef" min="0" value="0">
+                Def. Mágica: <input type="number" id="accessory1MagicDef" min="0" value="0">
+                Dano Físico: <input type="number" id="accessory1PhysDmg" min="0" value="0">
+                Dano Mágico: <input type="number" id="accessory1MagicDmg" min="0" value="0">
+            </p>
+            <p>Acessório 2: <input type="text" id="accessory2">
+                Def. Física: <input type="number" id="accessory2PhysDef" min="0" value="0">
+                Def. Mágica: <input type="number" id="accessory2MagicDef" min="0" value="0">
+                Dano Físico: <input type="number" id="accessory2PhysDmg" min="0" value="0">
+                Dano Mágico: <input type="number" id="accessory2MagicDmg" min="0" value="0">
+            </p>
+
+            <h2>Dano</h2>
+            <p>Dano Físico Total: <span id="totalPhysicalDamage">5</span> (5 + Artes Marciais + Arma Física + Acessórios)</p>
+            <p>Dano Mágico Total: <span id="totalMagicDamage">5</span> (5 + Magia Teórica + Item Arcano/Arma Mágica + Acessórios)</p>
+        </div>
+
+        <div id="notes" class="tab-content">
+            <h2>Notas e História do Personagem</h2>
+            <textarea id="characterNotes" rows="10" cols="50"></textarea>
+            <button class="neon-button" onclick="increaseTextareaSize('characterNotes')">Aumentar Espaço</button>
+        </div>
+
+        <h2>Salvar / Carregar Ficha</h2>
+        <button class="neon-button" onclick="saveCharacterSheet()">Salvar Ficha</button>
+        <input type="file" id="loadFile" accept=".json">
+        <button class="neon-button" onclick="document.getElementById('loadFile').click()">Carregar Ficha</button>
+    </div>
+
+    <script>
+        function updateCalculations() {
+            const level = parseInt(document.getElementById('level').value) || 1;
+            const vigor = parseInt(document.getElementById('vigor').value) || 0;
+            const agility = parseInt(document.getElementById('agility').value) || 0;
+            const power = parseInt(document.getElementById('power').value) || 0;
+            const armorValue = parseInt(document.getElementById('armorValue').value) || 0;
+            const armorExtra = parseInt(document.getElementById('armorExtra').value) || 0;
+            const magicArmorValue = parseInt(document.getElementById('magicArmorValue').value) || 0;
+            const magicArmorExtra = parseInt(document.getElementById('magicArmorExtra').value) || 0;
+            
+            const accessory1PhysDef = parseInt(document.getElementById('accessory1PhysDef').value) || 0;
+            const accessory1MagicDef = parseInt(document.getElementById('accessory1MagicDef').value) || 0;
+            const accessory2PhysDef = parseInt(document.getElementById('accessory2PhysDef').value) || 0;
+            const accessory2MagicDef = parseInt(document.getElementById('accessory2MagicDef').value) || 0;
+
+            // Update skill points
+            document.getElementById('vigorSkillPoints').textContent = vigor * 3;
+            document.getElementById('agilitySkillPoints').textContent = agility * 3;
+            document.getElementById('intelligenceSkillPoints').textContent = (parseInt(document.getElementById('intelligence').value) || 0) * 3;
+            document.getElementById('influenceSkillPoints').textContent = (parseInt(document.getElementById('influence').value) || 0) * 3;
+            document.getElementById('knowledgeSkillPoints').textContent = (parseInt(document.getElementById('knowledge').value) || 0) * 3;
+            document.getElementById('powerSkillPoints').textContent = power * 3;
+
+            // Update total attribute points
+            const totalAttributePoints = vigor + agility + (parseInt(document.getElementById('intelligence').value) || 0) +
+                                         (parseInt(document.getElementById('influence').value) || 0) + 
+                                         (parseInt(document.getElementById('knowledge').value) || 0) + power;
+            document.getElementById('totalAttributePoints').textContent = totalAttributePoints;
+
+            // Update max HP, Mana, and Energy
+            document.getElementById('maxHP').textContent = vigor * 5 + level * 2;
+            document.getElementById('maxMana').textContent = power * 5 + level * 2;
+            document.getElementById('maxEnergy').textContent = agility * 5 + level * 2;
+
+            // Update Defense and Magic Defense
+            const totalPhysicalDefense = 10 + armorValue + armorExtra + accessory1PhysDef + accessory2PhysDef;
+            const totalMagicalDefense = magicArmorValue + magicArmorExtra + accessory1MagicDef + accessory2MagicDef;
+            document.getElementById('defense').textContent = totalPhysicalDefense;
+            document.getElementById('magicDefense').textContent = totalMagicalDefense;
+
+            // Update Initiative
+            const agilityBonus = Math.floor(agility / 2);
+            document.getElementById('initiative').textContent = 10 + agilityBonus;
+
+            // Update max attribute and skill points
+            document.getElementById('maxAttributePoints').textContent = 3 + (level - 1) * 2;
+            document.getElementById('maxSkillPoints').textContent = (3 + (level - 1) * 2) * 3;
+
+            // Update carry capacity
+            document.getElementById('carryCapacity').textContent = vigor * 10;
+
+            // Update XP to next level
+            document.getElementById('xpToNextLevel').textContent = level * 100;
+
+            // Update Damage calculations
+            const martialArts = parseInt(document.getElementById('martialArts').value) || 0;
+            const theoreticalMagic = parseInt(document.getElementById('theoreticalMagic').value) || 0;
+            const physicalWeaponDamage = parseInt(document.getElementById('physicalDamage').value) || 0;
+            const magicWeaponDamage = parseInt(document.getElementById('magicDamage').value) || 0;
+            const accessory1PhysDmg = parseInt(document.getElementById('accessory1PhysDmg').value) || 0;
+            const accessory1MagicDmg = parseInt(document.getElementById('accessory1MagicDmg').value) || 0;
+            const accessory2PhysDmg = parseInt(document.getElementById('accessory2PhysDmg').value) || 0;
+            const accessory2MagicDmg = parseInt(document.getElementById('accessory2MagicDmg').value) || 0;
+
+            const totalPhysicalDamage = 5 + martialArts + physicalWeaponDamage + accessory1PhysDmg + accessory2PhysDmg;
+            const totalMagicDamage = 5 + theoreticalMagic + magicWeaponDamage + accessory1MagicDmg + accessory2MagicDmg;
+
+            document.getElementById('totalPhysicalDamage').textContent = totalPhysicalDamage;
+            document.getElementById('totalMagicDamage').textContent = totalMagicDamage;
+        }
+
+        function increaseTextareaSize(id) {
+            const textarea = document.getElementById(id);
+            textarea.rows += 5;
+        }
+
+        function saveCharacterSheet() {
+            const characterData = {
+                // Informações básicas
+                characterName: document.getElementById('characterName').value,
+                playerName: document.getElementById('playerName').value,
+                race: document.getElementById('race').value,
+                path: document.getElementById('path').value,
+                level: document.getElementById('level').value,
+                xp: document.getElementById('xp').value,
+
+                // Atributos
+                vigor: document.getElementById('vigor').value,
+                agility: document.getElementById('agility').value,
+                intelligence: document.getElementById('intelligence').value,
+                influence: document.getElementById('influence').value,
+                knowledge: document.getElementById('knowledge').value,
+                power: document.getElementById('power').value,
+
+                // Status
+                currentHP: document.getElementById('currentHP').value,
+                currentMana: document.getElementById('currentMana').value,
+                currentEnergy: document.getElementById('currentEnergy').value,
+
+                // Equipamento
+                mainWeapon: document.getElementById('mainWeapon').value,
+                physicalDamage: document.getElementById('physicalDamage').value,
+                magicDamage: document.getElementById('magicDamage').value,
+                armorName: document.getElementById('armorName').value,
+                armorValue: document.getElementById('armorValue').value,
+                armorExtra: document.getElementById('armorExtra').value,
+                magicArmorName: document.getElementById('magicArmorName').value,
+                magicArmorValue: document.getElementById('magicArmorValue').value,
+                magicArmorExtra: document.getElementById('magicArmorExtra').value,
+
+                // Acessórios
+                accessory1: document.getElementById('accessory1').value,
+                accessory1PhysDef: document.getElementById('accessory1PhysDef').value,
+                accessory1MagicDef: document.getElementById('accessory1MagicDef').value,
+                accessory1PhysDmg: document.getElementById('accessory1PhysDmg').value,
+                accessory1MagicDmg: document.getElementById('accessory1MagicDmg').value,
+                accessory2: document.getElementById('accessory2').value,
+                accessory2PhysDef: document.getElementById('accessory2PhysDef').value,
+                accessory2MagicDef: document.getElementById('accessory2MagicDef').value,
+                accessory2PhysDmg: document.getElementById('accessory2PhysDmg').value,
+                accessory2MagicDmg: document.getElementById('accessory2MagicDmg').value,
+
+                // Notas e habilidades
+                powersAndAbilities: document.getElementById('powersAndAbilities').value,
+                inventory: document.getElementById('inventory').value,
+                characterNotes: document.getElementById('characterNotes').value,
+            };
+
+            // Adicionar todas as perícias
+            const skillInputs = document.querySelectorAll('.skill-input');
+            skillInputs.forEach(input => {
+                characterData[input.id] = input.value;
+            });
+
+            const jsonString = JSON.stringify(characterData, null, 2); // Adicionado espaçamento para melhor legibilidade
+            const blob = new Blob([jsonString], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'character_sheet.json'; // Alterado para .json
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function loadCharacterSheet(event) {
+            const file = event.target.files[0];
+            if (file) {
+                if (file.type !== "application/json") {
+                    alert("Por favor, selecione um arquivo JSON válido.");
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const characterData = JSON.parse(e.target.result);
+                        
+                        // Preencher os campos com os dados carregados
+                        for (const [key, value] of Object.entries(characterData)) {
+                            const element = document.getElementById(key);
+                            if (element) {
+                                element.value = value;
+                            }
+                        }
+
+                        // Atualizar cálculos após carregar os dados
+                        updateCalculations();
+                        alert("Ficha carregada com sucesso!");
+                    } catch (error) {
+                        console.error("Erro ao analisar o arquivo JSON:", error);
+                        alert("Erro ao carregar a ficha. Por favor, verifique se o arquivo é válido.");
+                    }
+                };
+                reader.readAsText(file);
+            }
+        }
+
+        function openTab(evt, tabName) {
+            var i, tabContent, tabLinks;
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].style.display = "none";
+            }
+            tabLinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        // Add event listeners and initial calculation call
+        document.addEventListener('DOMContentLoaded', function () {
+            // Add event listeners to all number inputs
+            document.querySelectorAll('input[type="number"]').forEach(input => {
+                input.addEventListener('input', updateCalculations);
+            });
+
+            // Add event listeners to specific inputs
+            ['level', 'armorValue', 'armorExtra', 'magicArmorValue', 'magicArmorExtra', 'physicalDamage', 'magicDamage'].forEach(id => {
+                document.getElementById(id).addEventListener('input', updateCalculations);
+            });
+
+            // Add event listeners for accessory inputs
+            ['accessory1PhysDef', 'accessory1MagicDef', 'accessory1PhysDmg', 'accessory1MagicDmg',
+             'accessory2PhysDef', 'accessory2MagicDef', 'accessory2PhysDmg', 'accessory2MagicDmg'].forEach(id => {
+                document.getElementById(id).addEventListener('input', updateCalculations);
+            });
+
+            // Add event listener for file input
+            document.getElementById('loadFile').addEventListener('change', loadCharacterSheet);
+
+            // Initial calculation
+            updateCalculations();
+        });
+    </script>
+</body>
+</html>

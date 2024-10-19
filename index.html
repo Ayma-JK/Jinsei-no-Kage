@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jinsei no Kage - RPG Futurista</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <video id="background-video" autoplay loop muted playsinline>
+        <source src="Menu.mp4" type="video/mp4">
+        Seu navegador não suporta vídeos HTML5.
+    </video>
+    
+    <div class="container">
+        <h1 class="glitch" data-text="Jinsei no Kage">Jinsei no Kage</h1>
+        <nav>
+            <ul>
+                <li><a href="mundo.html" class="btn-neon new-tab">Mundo</a></li>
+                <li><a href="sistema.html" class="btn-neon new-tab">Sistema</a></li>
+                <li><a href="ficha.html" class="btn-neon new-tab">Ficha</a></li>
+                <li><a href="corporacoes.html" class="btn-neon new-tab">Corporações</a></li>
+            </ul>
+        </nav>
+    </div>
+    
+    <div id="music-player">
+        <button id="play-pause">Play/Pause</button>
+        <button id="next-track">Próxima</button>
+        <input type="range" id="volume-control" min="0" max="1" step="0.1" value="1">
+        <div id="now-playing"></div>
+    </div>
+
+    <script src="script.js"></script>
+    <!-- Remova o script inline aqui -->
+</body>
+</html>
