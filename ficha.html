@@ -165,7 +165,13 @@
 
         <div id="skills" class="tab-content">
             <h2>Perícias</h2>
+            <div id="skillPointSummary">
+                <p>Pontos de Perícia Totais: <span id="maxSkillPoints">60</span></p>
+                <p>Pontos de Perícia Usados: <span id="totalUsedSkillPoints">0</span></p>
+                <p>Pontos de Perícia Restantes: <span id="remainingSkillPoints">60</span></p>
+            </div>
             <h3 class="attribute">Vigor</h3>
+            <p>Perícias Restantes: <span id="vigorRemainingSkillPoints">0</span></p>
             <table>
                 <tr>
                     <td>Resiliência</td>
@@ -210,6 +216,7 @@
             </table>
 
             <h3 class="attribute">Agilidade</h3>
+            <p>Perícias Restantes: <span id="agilityRemainingSkillPoints">0</span></p>
             <table>
                 <tr>
                     <td>Esquiva</td>
@@ -254,6 +261,7 @@
             </table>
 
             <h3 class="attribute">Inteligência</h3>
+            <p>Perícias Restantes: <span id="intelligenceRemainingSkillPoints">0</span></p>
             <table>
                 <tr>
                     <td>Investigação</td>
@@ -298,6 +306,7 @@
             </table>
 
             <h3 class="attribute">Influência</h3>
+            <p>Perícias Restantes: <span id="influenceRemainingSkillPoints">0</span></p>
             <table>
                 <tr>
                     <td>Persuasão</td>
@@ -342,6 +351,7 @@
             </table>
 
             <h3 class="attribute">Conhecimento</h3>
+            <p>Perícias Restantes: <span id="knowledgeRemainingSkillPoints">0</span></p>
             <table>
                 <tr>
                     <td>Lógica</td>
@@ -386,6 +396,7 @@
             </table>
 
             <h3 class="attribute">Poder/Habilidade</h3>
+            <p>Perícias Restantes: <span id="powerRemainingSkillPoints">0</span></p>
             <table>
                 <tr>
                     <td>Controle</td>
@@ -428,8 +439,6 @@
                     <td><input type="number" id="restoration" min="0" value="0" class="skill-input" data-attribute="power"></td>
                 </tr>
             </table>
-
-            <p>Total de Pontos de Perícia: <span id="totalSkillPoints">0</span> / <span id="maxSkillPoints">9</span></p>
         </div>
 
         <div id="status" class="tab-content">
@@ -495,6 +504,9 @@
             const level = parseInt(document.getElementById('level').value) || 1;
             const vigor = parseInt(document.getElementById('vigor').value) || 0;
             const agility = parseInt(document.getElementById('agility').value) || 0;
+            const intelligence = parseInt(document.getElementById('intelligence').value) || 0;
+            const influence = parseInt(document.getElementById('influence').value) || 0;
+            const knowledge = parseInt(document.getElementById('knowledge').value) || 0;
             const power = parseInt(document.getElementById('power').value) || 0;
             const armorValue = parseInt(document.getElementById('armorValue').value) || 0;
             const armorExtra = parseInt(document.getElementById('armorExtra').value) || 0;
@@ -507,23 +519,21 @@
             const accessory2MagicDef = parseInt(document.getElementById('accessory2MagicDef').value) || 0;
 
             // Update skill points
-            document.getElementById('vigorSkillPoints').textContent = vigor * 3;
-            document.getElementById('agilitySkillPoints').textContent = agility * 3;
-            document.getElementById('intelligenceSkillPoints').textContent = (parseInt(document.getElementById('intelligence').value) || 0) * 3;
-            document.getElementById('influenceSkillPoints').textContent = (parseInt(document.getElementById('influence').value) || 0) * 3;
-            document.getElementById('knowledgeSkillPoints').textContent = (parseInt(document.getElementById('knowledge').value) || 0) * 3;
-            document.getElementById('powerSkillPoints').textContent = power * 3;
+            updateAttributeSkillPoints('vigor', vigor);
+            updateAttributeSkillPoints('agility', agility);
+            updateAttributeSkillPoints('intelligence', intelligence);
+            updateAttributeSkillPoints('influence', influence);
+            updateAttributeSkillPoints('knowledge', knowledge);
+            updateAttributeSkillPoints('power', power);
 
             // Update total attribute points
-            const totalAttributePoints = vigor + agility + (parseInt(document.getElementById('intelligence').value) || 0) +
-                                         (parseInt(document.getElementById('influence').value) || 0) + 
-                                         (parseInt(document.getElementById('knowledge').value) || 0) + power;
+            const totalAttributePoints = vigor + agility + intelligence + influence + knowledge + power;
             document.getElementById('totalAttributePoints').textContent = totalAttributePoints;
 
             // Update max HP, Mana, and Energy
-            document.getElementById('maxHP').textContent = vigor * 5 + level * 2;
-            document.getElementById('maxMana').textContent = power * 5 + level * 2;
-            document.getElementById('maxEnergy').textContent = agility * 5 + level * 2;
+            document.getElementById('maxHP').textContent = vigor * 10 + level * 20;
+            document.getElementById('maxMana').textContent = power * 10 + level * 20;
+            document.getElementById('maxEnergy').textContent = agility * 10 + level * 20;
 
             // Update Defense and Magic Defense
             const totalPhysicalDefense = 10 + armorValue + armorExtra + accessory1PhysDef + accessory2PhysDef;
@@ -536,8 +546,15 @@
             document.getElementById('initiative').textContent = 10 + agilityBonus;
 
             // Update max attribute and skill points
-            document.getElementById('maxAttributePoints').textContent = 3 + (level - 1) * 2;
-            document.getElementById('maxSkillPoints').textContent = (3 + (level - 1) * 2) * 3;
+            const maxAttributePoints = 20 + (level - 1) * 2;
+            document.getElementById('maxAttributePoints').textContent = maxAttributePoints;
+
+            // Update max skill points
+            const maxSkillPoints = maxAttributePoints * 3;
+            document.getElementById('maxSkillPoints').textContent = maxSkillPoints;
+
+            // Update skill point counters
+            updateSkillPointCounters();
 
             // Update carry capacity
             document.getElementById('carryCapacity').textContent = vigor * 10;
@@ -560,6 +577,35 @@
 
             document.getElementById('totalPhysicalDamage').textContent = totalPhysicalDamage;
             document.getElementById('totalMagicDamage').textContent = totalMagicDamage;
+        }
+
+        function updateAttributeSkillPoints(attribute, value) {
+            const skillPoints = value * 3;
+            document.getElementById(`${attribute}SkillPoints`).textContent = skillPoints;
+            updateSkillPointCounters();
+        }
+
+        function updateSkillPointCounters() {
+            const attributes = ['vigor', 'agility', 'intelligence', 'influence', 'knowledge', 'power'];
+            let totalUsedSkillPoints = 0;
+
+            attributes.forEach(attribute => {
+                const skillInputs = document.querySelectorAll(`.skill-input[data-attribute="${attribute}"]`);
+                let attributeUsedSkillPoints = 0;
+                skillInputs.forEach(input => {
+                    attributeUsedSkillPoints += parseInt(input.value) || 0;
+                });
+                totalUsedSkillPoints += attributeUsedSkillPoints;
+
+                const maxAttributeSkillPoints = parseInt(document.getElementById(`${attribute}SkillPoints`).textContent);
+                const remainingAttributeSkillPoints = maxAttributeSkillPoints - attributeUsedSkillPoints;
+
+                document.getElementById(`${attribute}RemainingSkillPoints`).textContent = remainingAttributeSkillPoints;
+            });
+
+            const maxSkillPoints = parseInt(document.getElementById('maxSkillPoints').textContent);
+            document.getElementById('totalUsedSkillPoints').textContent = totalUsedSkillPoints;
+            document.getElementById('remainingSkillPoints').textContent = maxSkillPoints - totalUsedSkillPoints;
         }
 
         function increaseTextareaSize(id) {
@@ -693,22 +739,21 @@
             });
 
             // Add event listeners to specific inputs
-            ['level', 'armorValue', 'armorExtra', 'magicArmorValue', 'magicArmorExtra', 'physicalDamage', 'magicDamage'].forEach(id => {
+            ['level', 'vigor', 'agility', 'intelligence', 'influence', 'knowledge', 'power'].forEach(id => {
                 document.getElementById(id).addEventListener('input', updateCalculations);
             });
 
-            // Add event listeners for accessory inputs
-            ['accessory1PhysDef', 'accessory1MagicDef', 'accessory1PhysDmg', 'accessory1MagicDmg',
-             'accessory2PhysDef', 'accessory2MagicDef', 'accessory2PhysDmg', 'accessory2MagicDmg'].forEach(id => {
-                document.getElementById(id).addEventListener('input', updateCalculations);
+            // Add event listeners to all skill inputs
+            document.querySelectorAll('.skill-input').forEach(input => {
+                input.addEventListener('input', updateSkillPointCounters);
             });
 
-            // Add event listener for file input
-            document.getElementById('loadFile').addEventListener('change', loadCharacterSheet);
-
-            // Initial calculation
+            // Initial calculations
             updateCalculations();
         });
+
+        // Add this event listener at the end of your script
+        document.getElementById('loadFile').addEventListener('change', loadCharacterSheet);
     </script>
 </body>
 </html>
