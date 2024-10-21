@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     // Player de música
     const playlist = [
-        { title: "Dark", file: "Dark.mp3" },
+        { title: "Dark", file: "dark.mp3" },
         { title: "Música 2", file: "caminho/para/musica2.mp3" },
         { title: "Música 3", file: "caminho/para/musica3.mp3" },
         // Adicione mais músicas conforme necessário
